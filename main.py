@@ -17,6 +17,8 @@ class Background(Widget):
     
     def scroll_textures(self,time_passed):
 
+        
+
         self.cloud_texture.uvpos =  ( (self.cloud_texture.uvpos[0] + time_passed)%Window.width , self.cloud_texture.uvpos[1])
         texture = self.property('cloud_texture')
         texture.dispatch(self)
@@ -27,6 +29,6 @@ class Background(Widget):
 
 class MainApp(App):
     def on_start(self):
-        Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/2.)
+        Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/60.)
 
 MainApp().run()

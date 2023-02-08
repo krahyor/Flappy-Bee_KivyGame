@@ -4,8 +4,8 @@ from kivy.uix.image import Image
 
 class Pipe(Widget):
     GAP_SIZE = NumericProperty(60)
-    CAP_SIZE = NumericProperty(20) #ความสูงหัวท่อ
-    pipe_center = NumericProperty(0)
+    CAP_SIZE = NumericProperty(20) # ความสูงหัวเสา
+    pipe_center = NumericProperty(0) # ความสูงตัวเสา
     bottom_body_position = NumericProperty(0)
     bottom_cap_position = NumericProperty(0)
     top_body_position = NumericProperty(0)
@@ -19,3 +19,9 @@ class Pipe(Widget):
         super().__init__(**kwargs)
         self.pipe_body_texture = Image(source='../Texture/pipe_body.png').texture
         self.pipe_body_texture.wrap = 'repeat'
+    
+    def on_size(self, *args):
+        lower_body_size = self.bottom_cap_position - self.bottom_body_position
+        
+        self.lower_pipe_tex_coords[5] = lower_body_size/20
+        self.lower_pipe_tex_coords[7] = lower_body_size/20

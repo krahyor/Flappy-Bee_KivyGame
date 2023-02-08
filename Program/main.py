@@ -55,7 +55,12 @@ class MainApp(App):
 
             self.pipes.append(pipe)
             self.root.add_widget(pipe)
-
+        #move pipes
+        Clock.schedule_interval(self.move_pipes,1/60.)
+    
+    def move_pipes(self, time_passed):
+        for pipe in self.pipes:
+            pipe.x -= time_passed * 100
         
 
 

@@ -31,13 +31,33 @@ class Background(Widget):
         self.floor_texture.uvpos = ((self.floor_texture.uvpos[0] + time_passed*3)%Window.width,self.floor_texture.uvpos[1])
         texture = self.property('floor_texture')
         texture.dispatch(self)
-    pass
+
+from random import randint
 
 
 
 class MainApp(App):
+    pipes = []
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
+
+    def start_game(self):
+        self.pipes = [] 
+        #สร้างpipes
+        num_pipes = 5
+        distance_between_pipes = Window.width/(num_pipes-1)
+        for i in range(num_pipes):
+            pipe = Pipe()
+            pipe.pipe_center = randint(96+100,self.root.height - 100)
+            pipe.size_hint = (None,None)
+            pipe.pos = (i*distance_between_pipes,96)
+            pipe.size = (64,self.root.height - 96)
+
+            self.pipes.append(pipe)
+            self.root.add_widget(pipe)
+
+        
+
 
 MainApp().run()
 

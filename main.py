@@ -26,6 +26,9 @@ class Background(Widget):
         texture = self.property('cloud_texture')
         texture.dispatch(self)
 
+        self.floor_texture.uvpos = ((self.floor_texture.uvpos[0] + time_passed)%Window.width,self.floor_texture.uvpos[1])
+        texture = self.property('floor_texture')
+        texture.dispatch(self)
     pass
 
 

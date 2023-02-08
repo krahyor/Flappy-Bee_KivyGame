@@ -28,5 +28,5 @@ class Pipe(Widget):
         
         top_body_size = self.top - self.top_body_position
         
-        self.top_pipe_tex_coords[5] = lower_body_size/10
-        self.top_pipe_tex_coords[7] = lower_body_size/10
+        self.top_pipe_tex_coords[5] = top_body_size/20
+        self.top_pipe_tex_coords[7] = top_body_size/20

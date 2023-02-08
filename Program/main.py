@@ -59,8 +59,18 @@ class MainApp(App):
         Clock.schedule_interval(self.move_pipes,1/60.)
     
     def move_pipes(self, time_passed):
+        #move pipes
         for pipe in self.pipes:
             pipe.x -= time_passed * 100
+
+        #Check if we need to reposition the pipe at the right side
+        num_pipes = 5
+        distance_between_pipes = Window.width / (num_pipes - 1)
+        pipe_xs = list(map(lambda pipe: pipe.x, self.pipes))
+        right_most_x = max(pipe_xs)
+        if right_most_x <= Window.width - distance_between_pipes:
+            most_left_pipe = self.pipes[pipe_xs.index(min(pipe_xs))]
+            most_left_pipe.x = Window.width 
         
 
 

@@ -4,6 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.core.window import Window #import window
 from kivy.clock import Clock
+from pipe import Pipe
 
 class Background(Widget):
     cloud_texture = ObjectProperty(None)
@@ -38,3 +39,6 @@ class MainApp(App):
         Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
 
 MainApp().run()
+
+
+

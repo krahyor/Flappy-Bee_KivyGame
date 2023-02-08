@@ -4,6 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.core.window import Window #import window
 from kivy.clock import Clock
+
 from pipe import Pipe
 
 class Background(Widget):

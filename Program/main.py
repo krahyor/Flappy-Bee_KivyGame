@@ -33,7 +33,19 @@ class Background(Widget):
         texture.dispatch(self)
 
 from random import randint
+from kivy.properties import NumericProperty
 
+class Bird(Image):
+    velocity = NumericProperty(0)
+
+    def on_touch_down(self, touch):
+        self.source = "../Texture/bee2.png"
+        self.velocity = 150
+        super().on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        self.source = "../Texture/bee1.png"
+        super().on_touch_up(touch)
 
 
 class MainApp(App):
@@ -41,7 +53,11 @@ class MainApp(App):
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
 
+
+        
+
     def start_game(self):
+       
         self.pipes = [] 
         #สร้างpipes
         num_pipes = 5

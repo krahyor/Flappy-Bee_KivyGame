@@ -35,7 +35,7 @@ class Background(Widget):
 from random import randint
 from kivy.properties import NumericProperty
 
-class Bird(Image):
+class Bee(Image):
     velocity = NumericProperty(0)
 
     def on_touch_down(self, touch):
@@ -50,14 +50,18 @@ class Bird(Image):
 
 class MainApp(App):
     pipes = []
+    GRAVITY = 300
+
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
 
-
+    def move_bee(self, time_passed):
+        bee = self.root.ids.bee
+        bee.y = bee.y + bee.velocity * time_passed
+        bee.velocity = bee.velocity - self.GRAVITY * time_passed
         
-
     def start_game(self):
-       
+        Clock.schedule_interval(self.move_bee, 1/60.)
         self.pipes = [] 
         #สร้างpipes
         num_pipes = 5

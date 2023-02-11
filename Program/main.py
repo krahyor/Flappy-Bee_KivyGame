@@ -52,16 +52,44 @@ class MainApp(App):
     pipes = []
     GRAVITY = 300
 
-    def on_start(self):
-        Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
+    #def on_start(self):
+        #Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
 
     def move_bee(self, time_passed):
         bee = self.root.ids.bee
         bee.y = bee.y + bee.velocity * time_passed
         bee.velocity = bee.velocity - self.GRAVITY * time_passed
-        
+        self.check_collision()
+
+    def check_collision(self):
+        bee = self.root.ids.bee
+        #ตรวจสอบว่าชนท่อมั้ย
+        for pipe in self.pipes:
+            if pipe.collide_widget(bee):
+                #ตรวจสอบการอยู่ระหว่างท่อ
+                if bee.y < (pipe.pipe_center - pipe.GAP_SIZE/2.0):
+                    self.game_over()
+                if bee.top > (pipe.pipe_center + pipe.GAP_SIZE/2.0):
+                    self.game_over()
+        if bee.y < 96:
+            self.game_over()
+        if bee.top > Window.height:
+            self.game_over()
+
+    def game_over(self):
+        self.root.ids.bee.pos = (20,(self.root.height - 96) / 2.0)
+        for pipe in self.pipes:
+            self.root.remove_widget(pipe)
+        self.frames.cancel()
+
+    def next_frame(self, time_passed):
+        self.move_bee(time_passed)
+        self.move_pipes(time_passed)
+        self.root.ids.background.scroll_textures(time_passed)
+
     def start_game(self):
-        Clock.schedule_interval(self.move_bee, 1/60.)
+        #Clock.schedule_interval(self.move_bee, 1/60.)
+        self.frames = Clock.schedule_interval(self.next_frame, 1/60.)
         self.pipes = [] 
         #สร้างpipes
         num_pipes = 5

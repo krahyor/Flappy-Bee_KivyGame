@@ -51,7 +51,7 @@ class Bee(Image):
 class MainApp(App):
     pipes = []
     GRAVITY = 300
-    
+    was_colliding = False
 
     #def on_start(self):
         #Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
@@ -69,6 +69,7 @@ class MainApp(App):
         for pipe in self.pipes:
             if pipe.collide_widget(bee):
                 is_colliding = True
+                
                 #ตรวจสอบการอยู่ระหว่างท่อ
                 if bee.y < (pipe.pipe_center - pipe.GAP_SIZE/2.0):
                     self.game_over()
@@ -78,7 +79,9 @@ class MainApp(App):
             self.game_over()
         if bee.top > Window.height:
             self.game_over()
-
+        if self.was_colliding and not is_colliding:
+            self.root.ids.score.text = str(int(self.root.ids.score.text)+1)
+        self.was_colliding = is_colliding
         
 
     def game_over(self):
@@ -96,6 +99,8 @@ class MainApp(App):
         self.root.ids.background.scroll_textures(time_passed)   
     
     def start_game(self):
+        self.root.ids.score.text = "0"
+        self.was_colliding = False
         #Clock.schedule_interval(self.move_bee, 1/60. )
         self.frames = Clock.schedule_interval(self.next_frame, 1/60.)
         self.pipes = [] 

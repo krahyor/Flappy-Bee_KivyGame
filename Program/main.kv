@@ -17,12 +17,17 @@ FloatLayout:
                 pos: self.pos[0], self.pos[1]
                 texture: self.floor_texture
 
+                
+
     Button:
         text: "Start game"
         size_hint: None,None
         background_normal:"../texture/transparent.png"
         background_down:"../texture/transparent.png"
+        id : start_button
         on_release:
+            self.disabled = True
+            self.opacity = 0
             app.start_game()
 
     Bee:

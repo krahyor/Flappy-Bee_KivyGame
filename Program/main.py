@@ -21,14 +21,14 @@ class Background(Widget):
         self.floor_texture = Image(source="../Texture/floor.png").texture
         self.floor_texture.wrap = 'repeat'
         self.floor_texture.uvsize = (Window.width / self.floor_texture.width, -1)
-
+    
     def scroll_textures(self,time_passed):
 
-        self.cloud_texture.uvpos =  ((self.cloud_texture.uvpos[0] + time_passed/2)%Window.width , self.cloud_texture.uvpos[1])
+        self.cloud_texture.uvpos =  ((self.cloud_texture.uvpos[0] + time_passed/2.0)%Window.width , self.cloud_texture.uvpos[1])
         texture = self.property('cloud_texture')
         texture.dispatch(self)
 
-        self.floor_texture.uvpos = ((self.floor_texture.uvpos[0] + time_passed*3)%Window.width,self.floor_texture.uvpos[1])
+        self.floor_texture.uvpos = ((self.floor_texture.uvpos[0] + time_passed)%Window.width,self.floor_texture.uvpos[1])
         texture = self.property('floor_texture')
         texture.dispatch(self)
 
@@ -51,6 +51,7 @@ class Bee(Image):
 class MainApp(App):
     pipes = []
     GRAVITY = 300
+    
 
     #def on_start(self):
         #Clock.schedule_interval(self.root.ids.background.scroll_textures, 1/40.)
@@ -64,31 +65,38 @@ class MainApp(App):
     def check_collision(self):
         bee = self.root.ids.bee
         #ตรวจสอบว่าชนท่อมั้ย
+        is_colliding = False
         for pipe in self.pipes:
             if pipe.collide_widget(bee):
+                is_colliding = True
                 #ตรวจสอบการอยู่ระหว่างท่อ
                 if bee.y < (pipe.pipe_center - pipe.GAP_SIZE/2.0):
                     self.game_over()
                 if bee.top > (pipe.pipe_center + pipe.GAP_SIZE/2.0):
-                    self.game_over()
+                    self.game_over() 
         if bee.y < 96:
             self.game_over()
         if bee.top > Window.height:
             self.game_over()
 
+        
+
     def game_over(self):
-        self.root.ids.bee.pos = (20,(self.root.height - 96) / 2.0)
+        self.root.ids.bee.pos = (20, (self.root.height - 96) / 2.0)
         for pipe in self.pipes:
             self.root.remove_widget(pipe)
-        self.frames.cancel()
+        self.frames.cancel()    
+        self.root.ids.start_button.disabled = False
+        self.root.ids.start_button.opacity = 1
+        
 
     def next_frame(self, time_passed):
         self.move_bee(time_passed)
         self.move_pipes(time_passed)
-        self.root.ids.background.scroll_textures(time_passed)
-
+        self.root.ids.background.scroll_textures(time_passed)   
+    
     def start_game(self):
-        #Clock.schedule_interval(self.move_bee, 1/60.)
+        #Clock.schedule_interval(self.move_bee, 1/60. )
         self.frames = Clock.schedule_interval(self.next_frame, 1/60.)
         self.pipes = [] 
         #สร้างpipes
@@ -98,13 +106,13 @@ class MainApp(App):
             pipe = Pipe()
             pipe.pipe_center = randint(96+100,self.root.height - 100)
             pipe.size_hint = (None,None)
-            pipe.pos = (i*distance_between_pipes,96)
-            pipe.size = (64,self.root.height - 96)
+            pipe.pos = (Window.width + i*distance_between_pipes,96)
+            pipe.size = (64,self.root.height - 96) 
 
             self.pipes.append(pipe)
             self.root.add_widget(pipe)
         #move pipes
-        Clock.schedule_interval(self.move_pipes,1/60.)
+        #Clock.schedule_interval(self.move_pipes,1/60.)
     
     def move_pipes(self, time_passed):
         #move pipes

@@ -4,6 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.core.window import Window #import window
 from kivy.clock import Clock
+from kivy.core.audio import SoundLoader
 
 from pipe import Pipe
 
@@ -22,6 +23,8 @@ class Background(Widget):
         self.floor_texture.wrap = 'repeat'
         self.floor_texture.uvsize = (Window.width / self.floor_texture.width, -1)
     
+        self.sound = SoundLoader.load("musicGame.mp3")
+        self.sound.play()
     def scroll_textures(self,time_passed):
 
         self.cloud_texture.uvpos =  ((self.cloud_texture.uvpos[0] + time_passed/2.0)%Window.width , self.cloud_texture.uvpos[1])
